@@ -1,38 +1,122 @@
-.App {
-  text-align: center;
+@font-face {
+  font-family: 'Transport';
+  src: local('Transport'), url(./fonts/Transport.ttf) format('truetype');
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+body {
+  font-family: "Source Sans 3" !important;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.button-submit {
+  background-color: #e49431 !important;
+  border-color:  #e49431 !important;
+  color: #0c1b39 !important;
+}
+
+.button-submit:active {
+  background-color: #0c1b39 !important;
+  border-color:  #0c1b39 !important;
+  color: #e49431 !important;
+
+}
+
+.leaderboard {
+  color:  #e49431 !important;
+  font-weight: 500 !important;
+  .leaderboard-title {
+    font-size: 1.75em !important;
+  }
+  .leaderboard-header{
+    font-size: 1em !important;
+    font-weight: 100;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.clues {
+  color:  #e49431 !important;
+  font-weight: 500 !important;
+  .clue-title {
+    font-size: 2.5em !important;
+  }
+  
+  .clue {
+    font-size: 1.75em !important;
+  }
+  
+  .clue-mark {
+    color:  #e49431 !important; 
+    font-size: 1.75em !important;
+  }
+
+}
+
+.clue-message {
+  font-family: "Source Sans 3" !important;
+  font-size: 3em;
+  font-weight: 500;
+  color:white;
+}
+
+
+.gold-icon {
+  filter: invert(83%) sepia(91%) saturate(507%) hue-rotate(324deg) brightness(86%) contrast(91%);
+}
+
+.silver-icon {
+  filter: invert(80%) sepia(18%) saturate(7%) hue-rotate(42deg) brightness(93%) contrast(92%);
+}
+
+.bronze-icon {
+  filter: invert(53%) sepia(61%) saturate(555%) hue-rotate(349deg) brightness(91%) contrast(86%);  
+}
+
+.medal-container {
+  img {
+    height: 150px;
+  }
+}
+
+.award {
+  font-family: "Source Sans 3" !important;
+  font-size: 1.75em;
+  font-weight: 500;
+  color:  #e49431 !important; 
+  text-shadow: 1px 1px black;
+}
+
+.ol-attribution {
+  display: none !important;
+}
+
+.ol-rotate {
+  display: none !important;
+}
+
+.ol-zoom {
+  display: none !important;
+}
+
+#trophy {
+  height: 25%;
+  position: absolute;
+  z-index: 3;
+  margin-left: 10px;
+  display: none;
+}
+
+#next-question-countdown {
+  font-family:"Transport";
+  display:block;
+  font-size:1.25em;
   color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  z-index: 3;
+  width: 200px;
+  height: 73px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-image: url("../public/images/next-question.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
