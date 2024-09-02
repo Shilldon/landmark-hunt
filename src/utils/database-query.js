@@ -103,7 +103,7 @@ export async function foundLandmark(player) {
 
   let finders = res.data[0].times_found;
   console.log(finders)
-  if(!finders.length===0 && !finders === null && !finders === undefined) {
+  if(finders.length!==0 && finders!==null && finders!==undefined) {
     console.log("finders exists")
     finders = finders.split(",")
     if(!finders.includes(player)) {
