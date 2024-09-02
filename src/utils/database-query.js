@@ -34,6 +34,7 @@ export async function checkQuestionNumber() {
 }
 
 export async function getCurrentLandmark(questionNumber) {
+  console.log(questionNumber)
   let res = await supabase
   .from("landmarks")
   .select("landmark")
@@ -103,7 +104,9 @@ export async function foundLandmark(player) {
   let finders = res.data[0].times_found;
   if(finders!=="") {
     finders = finders.split(",")
-    finders.push(player);
+    if(!finders.includes(player)) {
+      finders.push(player);
+    }
   }
   else {
     finders = [player];
@@ -158,8 +161,6 @@ export async function updateHintsUsed(user,hintsUsed,score) {
     .from("players")
     .update({"hints_used":hintsUsed,"score":score})
     .eq("user_id",user)
-
-    return res;
 }
 
 export async function resetPlayer(user,landmark,position) {

@@ -306,26 +306,30 @@ function checkLandmarkClick(e, landmark) {
         })
       });
       selectedFeatures[0].setStyle(styleNotFound);
-      playerFoundLandmark(landmark)
+      playerFoundLandmark(landmark,false)
     }
   }
 }
 
-async function playerFoundLandmark(landmark) {
+export async function playerFoundLandmark(landmark,firstRun) {
   //actions
   //reset this player's hints
   //add score
   //put up background over map
   //send message to all players that player has found landmark
   //increment number of times landmark has been found (when at 3 change the question and display trophies) --- do the cut off through subscribe
-  const { data: { user } } = await database.getUser();
+  const { data: { user } } = await database.getUser(); //get the user
   const userId = user.id;
-  const player = await database.getPlayerDetails(userId);
-  let multiplier = await database.checkQuestionNumber();
-  const timesFound = await database.foundLandmark(player.name);
+  const player = await database.getPlayerDetails(userId); // get the player's name etc.
+  let multiplier = await database.checkQuestionNumber(); //see what question wer are on
+  const timesFound = await database.foundLandmark(player.name); //add player to array of players who found the landmark (only if player already not in array) 
+  let position = timesFound.indexOf(player.name)+1;
   multiplier = Math.floor(multiplier / timesFound.length);
-  await database.setScore(userId, 15 * multiplier);
-  await database.resetPlayer(userId, landmark.toLowerCase(),timesFound.length);
+  //only want to run this if the player hasn't already got the points for it
+  if(firstRun===true) {
+    await database.setScore(userId, 15 * multiplier);
+    await database.resetPlayer(userId, landmark.toLowerCase(),position);  
+  }
   document.getElementById("landmark-image").src = `./images/${landmark.replace(/ /g, "-").toLowerCase()}-large.jpg`;
   document.getElementById("landmark-image").style.display = "block";
   document.getElementsByClassName("clue-message")[0].innerHTML = `Well done! You found ${titleCase(landmark)}!`;
@@ -338,6 +342,18 @@ async function playerFoundLandmark(landmark) {
   }
   trophy.src=`./images/${award}.png`;
   trophy.style.display = "block";
+
+  if(firstRun===false) {
+    for(let i=1;i<4;i++) {
+      document.getElementById(`clue-mark-${i}`).innerHTML = "check";
+      document.getElementById(`clue-input-${i}`).setAttribute("disabled","true")
+      document.getElementById(`guess-${i}`).setAttribute("disabled","true")
+      document.getElementById(`hint-${i}`).setAttribute("disabled","true")
+      document.getElementById(`clue-mark-${i}`).classList.add("correct");
+  
+    }
+
+  }
 
   //document.getElementById("scanner").style.display = "none";
 }

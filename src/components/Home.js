@@ -13,6 +13,7 @@ import Leaderboard from './Leaderboard'
 import * as database from '../utils/database-query'
 import supabase from '../utils/supabase';
 import * as messagesFunc from '../utils/message-updates'
+import * as mapFunc from '../utils/map-events'
 function Home() {
 
   supabase
@@ -77,29 +78,62 @@ function Home() {
   const [showTimer, setShowTimer] = useState(0);
   const [session, setSession] = useState(null)
   const [playersArray, setPlayers] = useState([]);
-  const [currentLandmark, setCurrentLandmark] = useState();
+  const [currentLandmark, setCurrentLandmark] = useState(1);
   const [landmarkHasBeenFound, setLandmarkFound] = useState(false);
   const [finders,setFinders] = useState([]);
 
   useEffect(() => {
-    if(session) {
-      getCurrentLandmark();
-      getPlayers();
-  
-    }
+
+      
+    
+    
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
+      console.log("page refreshed")
+      console.log(session)
+      if(session) {
+        console.log("there is a session")
+        getCurrentLandmark();
+        getPlayers();
+      }
     })
 
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
+      console.log("page refreshed")
+      console.log(session)
+      if(session) {
+        console.log("there is a session")
+        getCurrentLandmark();
+        getPlayers();
+      }
     })
   }, [])
 
+useEffect(() => {
+
+},[])
+
+  async function checkIfFoundLandmark(landmark) {
+    const { data: { user } } = await database.getUser(); //get the user
+    const userId = user.id;
+    const player = await database.getPlayerDetails(userId); // get the player's name etc.
+    console.log(player)
+    const landmarksFound = Object.keys(JSON.parse(player.landmarks_found));
+    console.log(landmarksFound)
+    if(landmarksFound.includes(landmark)) {
+      mapFunc.playerFoundLandmark(landmark,false);
+    }
+  }
+
   async function getCurrentLandmark() {
+    console.log("running get current landmark")
     const currentQuestion = await database.checkQuestionNumber();
+    console.log(currentQuestion)
     await database.getCurrentLandmark(currentQuestion).then(function (data) {
       setCurrentLandmark(data.toLowerCase());
+      checkIfFoundLandmark(data.toLowerCase());
     })
   }
 
