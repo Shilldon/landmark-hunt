@@ -306,12 +306,13 @@ function checkLandmarkClick(e, landmark) {
         })
       });
       selectedFeatures[0].setStyle(styleNotFound);
-      playerFoundLandmark(landmark,false)
+      playerFoundLandmark(landmark,true)
     }
   }
 }
 
 export async function playerFoundLandmark(landmark,firstRun) {
+  console.log("firstRun ",firstRun)
   //actions
   //reset this player's hints
   //add score

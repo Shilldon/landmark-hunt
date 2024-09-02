@@ -102,7 +102,9 @@ export async function foundLandmark(player) {
   .eq("id",1)
 
   let finders = res.data[0].times_found;
-  if(finders!=="") {
+  console.log(finders)
+  if(!finders.length===0 && !finders === null && !finders === undefined) {
+    console.log("finders exists")
     finders = finders.split(",")
     if(!finders.includes(player)) {
       finders.push(player);
@@ -164,6 +166,7 @@ export async function updateHintsUsed(user,hintsUsed,score) {
 }
 
 export async function resetPlayer(user,landmark,position) {
+  console.log("firing reset player which adds landmark to dictionary")
   let res = await supabase
   .from("players")
   .select("landmarks_found")

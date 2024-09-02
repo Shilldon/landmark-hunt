@@ -16,7 +16,7 @@ const finders = props.finders;
         map.setTarget("map")
         return () => map.setTarget(null)
 
-    }, []);
+    });
 
     if(showAwards === true) {
         document.getElementById("trophy").style.display = "none";

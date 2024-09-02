@@ -90,10 +90,7 @@ function Home() {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
-      console.log("page refreshed")
-      console.log(session)
       if(session) {
-        console.log("there is a session")
         getCurrentLandmark();
         getPlayers();
       }
@@ -101,10 +98,8 @@ function Home() {
 
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
-      console.log("page refreshed")
-      console.log(session)
+
       if(session) {
-        console.log("there is a session")
         getCurrentLandmark();
         getPlayers();
       }
