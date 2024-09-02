@@ -84,7 +84,8 @@ function Home() {
   useEffect(() => {
     if(session) {
       getCurrentLandmark();
-      getPlayers(); 
+      getPlayers();
+  
     }
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)

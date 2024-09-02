@@ -101,7 +101,7 @@ export async function foundLandmark(player) {
   .eq("id",1)
 
   let finders = res.data[0].times_found;
-  if(finders!="") {
+  if(finders!=="") {
     finders = finders.split(",")
     finders.push(player);
   }

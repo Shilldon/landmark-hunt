@@ -34,7 +34,7 @@ export default function LoginPage() {
 
   return (
 
-    <Col md={7} className="p-0">
+    <Col md={6} className="p-0">
       <Row style={({ height: "20%" })} className="d-flex align-items-center">
         <Col md={12} className="d-flex justify-content-center">
           <span style={({ fontSize: "2em", color: "#0c1b39", fontWeight: "500" })}>Log In To Access Map</span>
