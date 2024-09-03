@@ -34,7 +34,6 @@ export async function checkQuestionNumber() {
 }
 
 export async function getCurrentLandmark(questionNumber) {
-  console.log(questionNumber)
   let res = await supabase
   .from("landmarks")
   .select("landmark")
@@ -48,9 +47,7 @@ export async function setCurrentLandmark() {
   .from("current-landmark")
   .select("current_landmark")
   .eq("id",1)
-  console.log(res)
   let currentLandmark = res.data[0].current_landmark+1;
-console.log("CURRENT ",currentLandmark)
   await supabase
   .from("current-landmark")
   .update([{"current_landmark":currentLandmark,"times_found":""}])
@@ -102,9 +99,7 @@ export async function foundLandmark(player) {
   .eq("id",1)
 
   let finders = res.data[0].times_found;
-  console.log(finders)
   if(finders.length!==0 && finders!==null && finders!==undefined) {
-    console.log("finders exists")
     finders = finders.split(",")
     if(!finders.includes(player)) {
       finders.push(player);
@@ -158,6 +153,12 @@ export async function setScore(user,score) {
     return res;
 }
 
+export async function sendMessage(player,userId) {
+  await supabase
+  .from("messages")
+  .insert({message: `${player} has found a landmark.`,user_id:userId})
+}  
+
 export async function updateHintsUsed(user,hintsUsed,score) {
     let res = await supabase
     .from("players")
@@ -165,8 +166,14 @@ export async function updateHintsUsed(user,hintsUsed,score) {
     .eq("user_id",user)
 }
 
+export async function deleteMessage(messageID) {
+  await supabase
+  .from("messages")
+  .delete()
+  .eq("id",messageID)
+}
+
 export async function resetPlayer(user,landmark,position) {
-  console.log("firing reset player which adds landmark to dictionary")
   let res = await supabase
   .from("players")
   .select("landmarks_found")

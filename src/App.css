@@ -6,6 +6,7 @@
 
 body {
   font-family: "Source Sans 3" !important;
+  overflow:hidden;
 }
 
 .button-submit {
@@ -57,6 +58,7 @@ body {
   font-weight: 500;
   color:white;
 }
+
 
 
 .gold-icon {
@@ -119,4 +121,37 @@ body {
   background-image: url("../public/images/next-question.png");
   background-size: 100%;
   background-repeat: no-repeat;
+}
+
+.showmessage {
+  animation: raise-message 1 ease-in 0.5s forwards;
+}
+
+.hidemessage {
+  
+  animation: fadeout-message 1 ease-in 1s forwards ;
+}
+
+.message-container {
+  z-index:10;
+  position: absolute;
+  width: 250px !important;
+  height: 190px;
+  border: 1px solid white;
+  border-radius: 5%;
+  right: 10px;
+}
+
+
+@keyframes raise-message {
+ 0% {
+  bottom: -190px
+ }
+ 100% {
+  bottom: 10px;
+ }
+}
+@keyframes fadeout-message {
+  0% { opacity: 1; bottom:10px;}
+  100% { opacity: 0; bottom:10px;}
 }

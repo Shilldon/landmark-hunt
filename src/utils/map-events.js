@@ -199,7 +199,7 @@ export async function RecenterMap(coords, zoom, radius, landmark, geojson, clue)
     }
   });
   await drawSearchArea(radius, landmark, coords)
-  await drawLandmarkBounds(geojson, landmark, clue)
+  await drawLandmarkBounds(geojson, landmark/*, clue*/)
 
   await map.getView().animate({
     zoom: zoom,
@@ -243,7 +243,7 @@ function drawSearchArea(radius, landmark, coords) {
 }
 
 
-function drawLandmarkBounds(geojson, landmark, clue) {
+function drawLandmarkBounds(geojson, landmark/*, clue*/) {
   var area = [];
   var coordinates = geojson.coordinates[0];
   for (let i = 0; i < coordinates.length; i++) {
@@ -294,11 +294,13 @@ function drawLandmarkBounds(geojson, landmark, clue) {
 
 function checkLandmarkClick(e, landmark) {
   var selectedFeatures = e.target.getFeatures().getArray();
+  console.log(e.target.getFeatures().getArray())
   if (selectedFeatures.length > 0) {
+    
     if (selectedFeatures[0].values_.name === landmark) {
       var styleNotFound = new Style({
         stroke: new Stroke({
-          color: 'transparent',
+          color: 'red',
           width: 1
         }),
         fill: new Fill({
@@ -308,11 +310,22 @@ function checkLandmarkClick(e, landmark) {
       selectedFeatures[0].setStyle(styleNotFound);
       playerFoundLandmark(landmark,true)
     }
+    else {
+      var styleNotFound = new Style({
+        stroke: new Stroke({
+          color: 'blue',
+          width: 2
+        }),
+        fill: new Fill({
+          color: 'rgba(0, 0, 255, 0.1)'
+        })
+      });
+      selectedFeatures[0].setStyle(styleNotFound);
+    }
   }
 }
 
 export async function playerFoundLandmark(landmark,firstRun) {
-  console.log("firstRun ",firstRun)
   //actions
   //reset this player's hints
   //add score
@@ -330,6 +343,7 @@ export async function playerFoundLandmark(landmark,firstRun) {
   if(firstRun===true) {
     await database.setScore(userId, 15 * multiplier);
     await database.resetPlayer(userId, landmark.toLowerCase(),position);  
+    await database.sendMessage(player.name,userId);
   }
   document.getElementById("landmark-image").src = `./images/${landmark.replace(/ /g, "-").toLowerCase()}-large.jpg`;
   document.getElementById("landmark-image").style.display = "block";
