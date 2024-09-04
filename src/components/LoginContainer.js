@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
@@ -7,16 +7,32 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form'
 
 import supabase from '../utils/supabase'
+import * as database from '../utils/database-query'
+import * as messagesFunc from '../utils/message-updates'
 
 
+function LoginPage() {
+  const [players, setPlayers] = useState([]);
+
+  useEffect(() => {
+
+    const getPlayers = async function() {
+      await database.getAllPlayers().then(function (results) {
+        let playerKeys = [];
+        results.data.map((player,index) => (
+          playerKeys.push(player.name)
+        ))
+        setPlayers(playerKeys.sort())
+      })
+    }
 
 
-export default function LoginPage() {
-  const [name, setEmail] = useState('Emma')
+    getPlayers();
+  },[])
+  const [name, setEmail] = useState('Beth')
   const [password, setPassword] = useState('')
-
-
-  const items = ["Beth", "Debbie", "Emma", "Gemma", "Jules", "Lauren", "Michal", "Rebecca", "Sarah B", "Sarah P", "Sophia"];
+  console.log(players)
+//  const items = ["Beth", "Debbie", "Emma", "Gemma", "Jules", "Lauren", "Michal", "Rebecca", "Sarah B", "Sarah P", "Sophia"];
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -47,9 +63,9 @@ export default function LoginPage() {
           <Dropdown className="mb-3">
             <Dropdown.Toggle variant="success">Select Player</Dropdown.Toggle>
             <Dropdown.Menu>
-              {items.map((item,index) => (
-                <Dropdown.Item key={index} onClick={() => setEmail(item)}>
-                  {item}
+              {players.map((player,index) => (
+                <Dropdown.Item key={index} onClick={() => setEmail(player)}>
+                  {player}
                 </Dropdown.Item>
               ))}
             </Dropdown.Menu>
@@ -80,3 +96,4 @@ export default function LoginPage() {
 }
 
 
+export default LoginPage;

@@ -153,6 +153,16 @@ export async function setScore(user,score) {
     return res;
 }
 
+export async function getAllPlayers() {
+  let res = await supabase
+  .from("players")
+  .select("name")
+
+
+
+  return res
+}
+
 export async function sendMessage(player,userId) {
   await supabase
   .from("messages")
